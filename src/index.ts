@@ -2,11 +2,11 @@ import { connectToDb } from "./db/connection.js";
 import inquirer from "inquirer";
 import Database from "./db/index.js";
 
-const database = new Database();
+await connectToDb();
 
 function startCli(): void {
   inquirer
-    .prompt([
+    .prompt(
       {
         type: "list",
         message: "What would you like to do?",
@@ -20,19 +20,19 @@ function startCli(): void {
           "Add Department",
           "Quit",
         ],
-      },
-    ])
-    .then((answers: { options: string }) => {
-      console.log(answers);
-      const choice = answers.options;
-      switch (choice) {
+      }
+    )
+    .then(async (choice) => {
+      console.log( choice.options );
+      switch (choice.options) {
         case `View All Employees`:
-          viewAllEmps();
+          console.log(`View All Employees selected`)
+          await viewAllEmps();
           startCli();
           break;
         case `Add Employee`:
           console.log(`Add Employee selected`);
-          viewNewEmp();
+          addNewEmp();
           startCli();
           break;
         case `Update Employee Role`:
@@ -42,7 +42,7 @@ function startCli(): void {
           break;
         case `Add Role`:
           console.log(`Add Role selected`);
-          viewNewRole();
+          addNewRole();
           startCli();
           break;
         case `View All Departments`:
@@ -52,7 +52,7 @@ function startCli(): void {
           break;
         case `Add Department`:
           console.log(`Add Department selected`);
-          viewNewDep();
+          addNewDep();
           startCli();
           break;
 
@@ -65,9 +65,25 @@ function startCli(): void {
 }
 
 // finish these
-function viewAllEmps() {
-  database
-    .findAllEmps()
+async function viewAllEmps() {
+  await Database.findAllEmps()
+  .then((data) => {
+      console.table(data.rows);
+    })
+    }
+
+async function addNewEmp() {
+  await Database.findNewEmp()
+    .then((data) => {
+      console.table(data.rows);
+    })
+    .then(() => {
+      startCli();
+    });
+}
+
+async function viewUpdatedRole() {
+  await Database.findUpdatedRole()
     .then((data) => {
       console.log(data);
     })
@@ -76,9 +92,8 @@ function viewAllEmps() {
     });
 }
 
-function viewNewEmp() {
-  database
-    .findNewEmp()
+async function addNewRole() {
+  await Database.findNewRole()
     .then((data) => {
       console.log(data);
     })
@@ -87,9 +102,8 @@ function viewNewEmp() {
     });
 }
 
-function viewUpdatedRole() {
-  database
-    .findUpdatedRole()
+async function viewAllDeps() {
+  await Database.findAllDeps()
     .then((data) => {
       console.log(data);
     })
@@ -98,31 +112,8 @@ function viewUpdatedRole() {
     });
 }
 
-function viewNewRole() {
-  database
-    .findNewRole()
-    .then((data) => {
-      console.log(data);
-    })
-    .then(() => {
-      startCli();
-    });
-}
-
-function viewAllDeps() {
-  database
-    .findAllDeps()
-    .then((data) => {
-      console.log(data);
-    })
-    .then(() => {
-      startCli();
-    });
-}
-
-function viewNewDep() {
-  database
-    .findNewDep()
+async function addNewDep() {
+  await Database.findNewDep()
     .then((data) => {
       console.log(data);
     })

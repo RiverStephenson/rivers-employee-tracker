@@ -1,34 +1,26 @@
 import { pool } from "./connection.js";
 
-export default class Database {
-  constructor() {}
-  // code provided by TA
-  async query(sql: string, args: any[] = []) {
-    const client = await pool.connect();
-    try {
-      const result = await client.query(sql, args);
-      return result;
-    } finally {
-      client.release();
-    }
-    // finish these
-  }
+ class Database {
+  
+
   async findAllEmps() {
-    return this.query();
+    return await pool.query("SELECT * FROM employee");
   }
   async findNewEmp() {
-    return this.query();
+    return await pool.query('SELECT * FROM employee' );
   }
   async findUpdatedRole() {
-    return this.query();
+    return await pool.query("");
   }
   async findNewRole() {
-    return this.query();
+    return await pool.query("");
   }
   async findAllDeps() {
-    return this.query();
+    return await pool.query('SELECT * FROM department');
   }
   async findNewDep() {
-    return this.query();
+    return await pool.query("");
   }
 }
+
+export default new Database();

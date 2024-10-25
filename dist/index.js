@@ -1,35 +1,34 @@
+import { connectToDb } from "./db/connection.js";
 import inquirer from "inquirer";
 import Database from "./db/index.js";
-const database = new Database();
+await connectToDb();
 function startCli() {
     inquirer
-        .prompt([
-        {
-            type: "list",
-            message: "What would you like to do?",
-            name: "options",
-            choices: [
-                `View All Employees`,
-                "Add Employee",
-                "Update Employee Role",
-                "Add Role",
-                "View All Departments",
-                "Add Department",
-                "Quit",
-            ],
-        },
-    ])
-        .then((answers) => {
-        console.log(answers);
-        const choice = answers.options;
-        switch (choice) {
+        .prompt({
+        type: "list",
+        message: "What would you like to do?",
+        name: "options",
+        choices: [
+            `View All Employees`,
+            "Add Employee",
+            "Update Employee Role",
+            "Add Role",
+            "View All Departments",
+            "Add Department",
+            "Quit",
+        ],
+    })
+        .then(async (choice) => {
+        console.log(choice.options);
+        switch (choice.options) {
             case `View All Employees`:
-                viewAllEmps();
+                console.log(`View All Employees selected`);
+                await viewAllEmps();
                 startCli();
                 break;
             case `Add Employee`:
                 console.log(`Add Employee selected`);
-                viewNewEmp();
+                addNewEmp();
                 startCli();
                 break;
             case `Update Employee Role`:
@@ -39,7 +38,7 @@ function startCli() {
                 break;
             case `Add Role`:
                 console.log(`Add Role selected`);
-                viewNewRole();
+                addNewRole();
                 startCli();
                 break;
             case `View All Departments`:
@@ -49,7 +48,7 @@ function startCli() {
                 break;
             case `Add Department`:
                 console.log(`Add Department selected`);
-                viewNewDep();
+                addNewDep();
                 startCli();
                 break;
             default:
@@ -60,19 +59,17 @@ function startCli() {
     });
 }
 // finish these
-function viewAllEmps() {
-    database
-        .findAllEmps()
+async function viewAllEmps() {
+    await Database.findAllEmps()
         .then((data) => {
-        console.log(data);
-    })
-        .then(() => {
-        startCli();
+        console.table(data.rows);
     });
+    // .then(() => {
+    //    startCli();
+    // });
 }
-function viewNewEmp() {
-    database
-        .findNewEmp()
+function addNewEmp() {
+    Database.findNewEmp()
         .then((data) => {
         console.log(data);
     })
@@ -81,8 +78,7 @@ function viewNewEmp() {
     });
 }
 function viewUpdatedRole() {
-    database
-        .findUpdatedRole()
+    Database.findUpdatedRole()
         .then((data) => {
         console.log(data);
     })
@@ -90,9 +86,8 @@ function viewUpdatedRole() {
         startCli();
     });
 }
-function viewNewRole() {
-    database
-        .findNewRole()
+function addNewRole() {
+    Database.findNewRole()
         .then((data) => {
         console.log(data);
     })
@@ -101,8 +96,7 @@ function viewNewRole() {
     });
 }
 function viewAllDeps() {
-    database
-        .findAllDeps()
+    Database.findAllDeps()
         .then((data) => {
         console.log(data);
     })
@@ -110,9 +104,8 @@ function viewAllDeps() {
         startCli();
     });
 }
-function viewNewDep() {
-    database
-        .findNewDep()
+function addNewDep() {
+    Database.findNewDep()
         .then((data) => {
         console.log(data);
     })
