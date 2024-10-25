@@ -1,7 +1,8 @@
 import { connectToDb } from "./db/connection.js";
 import inquirer from "inquirer";
+import Database from "./db/index.js";
 
-await connectToDb();
+const database = new Database();
 
 function startCli(): void {
   inquirer
@@ -11,55 +12,127 @@ function startCli(): void {
         message: "What would you like to do?",
         name: "options",
         choices: [
-            `View All Employees`,
-             "Add Employee",
-             "Update Employee Role",
-             "Add Role",
-             "View All Departments",
-             "Add Department",
-             "Quit"
-            ],
+          `View All Employees`,
+          "Add Employee",
+          "Update Employee Role",
+          "Add Role",
+          "View All Departments",
+          "Add Department",
+          "Quit",
+        ],
       },
     ])
     .then((answers: { options: string }) => {
       console.log(answers);
-      const choice = answers.options
+      const choice = answers.options;
       switch (choice) {
-        case `View All Employees`: 
-        console.log(`View All Employees selected`);
-        startCli();
+        case `View All Employees`:
+          viewAllEmps();
+          startCli();
           break;
-          case `Add Employee`:
-            console.log(`Add Employee selected`);
-            startCli();
+        case `Add Employee`:
+          console.log(`Add Employee selected`);
+          viewNewEmp();
+          startCli();
           break;
-          case `Update Employee Role`:
-            console.log(`Update Employee Role selected`);
-            startCli();
+        case `Update Employee Role`:
+          console.log(`Update Employee Role selected`);
+          viewUpdatedRole();
+          startCli();
           break;
-          case `Add Role`:
-            console.log(`Add Role selected`);
-            startCli();
+        case `Add Role`:
+          console.log(`Add Role selected`);
+          viewNewRole();
+          startCli();
           break;
-          case `View All Departments`:
-            console.log(`View All Departments selected`);
-            startCli();
+        case `View All Departments`:
+          console.log(`View All Departments selected`);
+          viewAllDeps();
+          startCli();
           break;
-          case `Add Department`:
-            console.log(`Add Department selected`);
-            startCli();
+        case `Add Department`:
+          console.log(`Add Department selected`);
+          viewNewDep();
+          startCli();
           break;
 
         default:
           console.log(`Quit`);
-          quit()
+          quit();
           break;
       }
     });
 }
 
+// finish these
+function viewAllEmps() {
+  database
+    .findAllEmps()
+    .then((data) => {
+      console.log(data);
+    })
+    .then(() => {
+      startCli();
+    });
+}
+
+function viewNewEmp() {
+  database
+    .findNewEmp()
+    .then((data) => {
+      console.log(data);
+    })
+    .then(() => {
+      startCli();
+    });
+}
+
+function viewUpdatedRole() {
+  database
+    .findUpdatedRole()
+    .then((data) => {
+      console.log(data);
+    })
+    .then(() => {
+      startCli();
+    });
+}
+
+function viewNewRole() {
+  database
+    .findNewRole()
+    .then((data) => {
+      console.log(data);
+    })
+    .then(() => {
+      startCli();
+    });
+}
+
+function viewAllDeps() {
+  database
+    .findAllDeps()
+    .then((data) => {
+      console.log(data);
+    })
+    .then(() => {
+      startCli();
+    });
+}
+
+function viewNewDep() {
+  database
+    .findNewDep()
+    .then((data) => {
+      console.log(data);
+    })
+    .then(() => {
+      startCli();
+    });
+}
+
 function quit() {
-process.exit();
-};
+  process.exit();
+}
 
 startCli();
