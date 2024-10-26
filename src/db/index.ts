@@ -7,10 +7,10 @@ import { pool } from "./connection.js";
     return await pool.query("SELECT * FROM employee");
   }
   async findNewEmp() {
-    return await pool.query('SELECT * FROM employee' );
+    return await pool.query('INSERT INTO employee VALUES ()');
   }
-  async findUpdatedRole() {
-    return await pool.query("");
+  async findAllRole() {
+return await pool.query("SELECT * FROM job_role");    
   }
   async findNewRole() {
     return await pool.query("");

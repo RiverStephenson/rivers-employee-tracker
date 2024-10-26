@@ -11,7 +11,7 @@ function startCli() {
         choices: [
             `View All Employees`,
             "Add Employee",
-            "Update Employee Role",
+            "View All Roles",
             "Add Role",
             "View All Departments",
             "Add Department",
@@ -31,9 +31,9 @@ function startCli() {
                 addNewEmp();
                 startCli();
                 break;
-            case `Update Employee Role`:
-                console.log(`Update Employee Role selected`);
-                viewUpdatedRole();
+            case `View All Roles`:
+                console.log(`View All Roles selected`);
+                await viewAllRole();
                 startCli();
                 break;
             case `Add Role`:
@@ -60,57 +60,38 @@ function startCli() {
 }
 // finish these
 async function viewAllEmps() {
-    await Database.findAllEmps()
-        .then((data) => {
+    await Database.findAllEmps().then((data) => {
         console.table(data.rows);
     });
-    // .then(() => {
-    //    startCli();
-    // });
 }
-function addNewEmp() {
-    Database.findNewEmp()
-        .then((data) => {
-        console.log(data);
-    })
-        .then(() => {
-        startCli();
+async function addNewEmp() {
+    // id: number,
+    // first_name: string,
+    // last_name: string,
+    // role_id: number,
+    // manager_id: number
+    await Database.findNewEmp().then((data) => {
+        console.table(data.rows);
     });
 }
-function viewUpdatedRole() {
-    Database.findUpdatedRole()
-        .then((data) => {
-        console.log(data);
-    })
-        .then(() => {
-        startCli();
+async function viewAllRole() {
+    await Database.findAllRole().then((data) => {
+        console.table(data.rows);
     });
 }
-function addNewRole() {
-    Database.findNewRole()
-        .then((data) => {
+async function addNewRole() {
+    await Database.findNewRole().then((data) => {
         console.log(data);
-    })
-        .then(() => {
-        startCli();
     });
 }
-function viewAllDeps() {
-    Database.findAllDeps()
-        .then((data) => {
-        console.log(data);
-    })
-        .then(() => {
-        startCli();
+async function viewAllDeps() {
+    await Database.findAllDeps().then((data) => {
+        console.table(data.rows);
     });
 }
-function addNewDep() {
-    Database.findNewDep()
-        .then((data) => {
+async function addNewDep() {
+    await Database.findNewDep().then((data) => {
         console.log(data);
-    })
-        .then(() => {
-        startCli();
     });
 }
 function quit() {

@@ -6,27 +6,25 @@ await connectToDb();
 
 function startCli(): void {
   inquirer
-    .prompt(
-      {
-        type: "list",
-        message: "What would you like to do?",
-        name: "options",
-        choices: [
-          `View All Employees`,
-          "Add Employee",
-          "Update Employee Role",
-          "Add Role",
-          "View All Departments",
-          "Add Department",
-          "Quit",
-        ],
-      }
-    )
+    .prompt({
+      type: "list",
+      message: "What would you like to do?",
+      name: "options",
+      choices: [
+        `View All Employees`,
+        "Add Employee",
+        "View All Roles",
+        "Add Role",
+        "View All Departments",
+        "Add Department",
+        "Quit",
+      ],
+    })
     .then(async (choice) => {
-      console.log( choice.options );
+      console.log(choice.options);
       switch (choice.options) {
         case `View All Employees`:
-          console.log(`View All Employees selected`)
+          console.log(`View All Employees selected`);
           await viewAllEmps();
           startCli();
           break;
@@ -35,11 +33,11 @@ function startCli(): void {
           addNewEmp();
           startCli();
           break;
-        case `Update Employee Role`:
-          console.log(`Update Employee Role selected`);
-          viewUpdatedRole();
-          startCli();
-          break;
+          case `View All Roles`:
+            console.log(`View All Roles selected`);
+            await viewAllRole();
+            startCli();
+            break;
         case `Add Role`:
           console.log(`Add Role selected`);
           addNewRole();
@@ -66,60 +64,42 @@ function startCli(): void {
 
 // finish these
 async function viewAllEmps() {
-  await Database.findAllEmps()
-  .then((data) => {
-      console.table(data.rows);
-    })
-    }
+  await Database.findAllEmps().then((data) => {
+    console.table(data.rows);
+  });
+}
 
 async function addNewEmp() {
-  await Database.findNewEmp()
-    .then((data) => {
-      console.table(data.rows);
-    })
-    .then(() => {
-      startCli();
-    });
+// id: number,
+// first_name: string,
+// last_name: string,
+// role_id: number,
+// manager_id: number
+  await Database.findNewEmp().then((data) => {
+    console.table(data.rows);
+  });
 }
-
-async function viewUpdatedRole() {
-  await Database.findUpdatedRole()
-    .then((data) => {
-      console.log(data);
-    })
-    .then(() => {
-      startCli();
-    });
+async function viewAllRole() {
+  await Database.findAllRole().then((data) => {
+    console.table(data.rows);
+  });
 }
-
 async function addNewRole() {
-  await Database.findNewRole()
-    .then((data) => {
-      console.log(data);
-    })
-    .then(() => {
-      startCli();
-    });
+  await Database.findNewRole().then((data) => {
+    console.log(data);
+  });
 }
 
 async function viewAllDeps() {
-  await Database.findAllDeps()
-    .then((data) => {
-      console.log(data);
-    })
-    .then(() => {
-      startCli();
-    });
+  await Database.findAllDeps().then((data) => {
+    console.table(data.rows);
+  });
 }
 
 async function addNewDep() {
-  await Database.findNewDep()
-    .then((data) => {
-      console.log(data);
-    })
-    .then(() => {
-      startCli();
-    });
+  await Database.findNewDep().then((data) => {
+    console.log(data);
+  });
 }
 
 function quit() {
