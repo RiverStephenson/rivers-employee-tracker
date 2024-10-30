@@ -85,9 +85,7 @@ async function addNewEmp() {
       message: "What is the role of the new employee?",
       name: "role",
       // research functions in inquirer
-      choices: [
-        1, 2, 3, 4, 5, 7, 8, 9, 11, 12, 14, 15, 16
-      ],
+      choices: [1, 2, 3, 4, 5, 7, 8, 9, 11, 12, 14, 15, 16],
     },
     {
       type: "list",
@@ -113,8 +111,26 @@ async function viewAllRole() {
   });
 }
 async function addNewRole() {
-  await Database.createNewRole([]).then((data) => {
-    console.log(data);
+  const result = await inquirer.prompt([
+    {
+      type: "input",
+      message: "What is the position title?",
+      name: "title",
+    },
+    {
+      type: 'input',
+      message: 'What is the salary of the new position?',
+      name: 'salary'
+    },
+    {
+      type: 'list',
+      message: 'What is the department ID?',
+      name: 'depID',
+      choices: [ 1, 2, 3, 4]
+    }
+  ]);
+  await Database.createNewRole([result.title, result.salary, result.depID]).then((data) => {
+    console.log(`New Role Added: ${data}`);
     startCli();
   });
 }

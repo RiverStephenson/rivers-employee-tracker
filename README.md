@@ -12,6 +12,8 @@ Here is the GitHub link https://github.com/RiverStephenson/rivers-employee-track
 
 Once you're in the proper directory type npm install and npm start into the command line. Once you've done that you will be prompted with some actions. From there you can view all your employees, add more employees to the database, etc.
 
+[Demonstration Video](<../../../../Videos/Captures/2024-10-30 16-28-41.mkv>)
+
 ## Credits
 
 The wonderful TAs and Dan the Man 
