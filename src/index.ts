@@ -1,8 +1,8 @@
-import { connectToDb } from "./db/connection.js";
+// import { connectToDb } from "./db/connection.js";
 import inquirer from "inquirer";
-import Database from "./db/index.js";
+import Database from "./db/main.js";
 
-await connectToDb();
+// await connectToDb();
 
 function startCli(): void {
   inquirer
@@ -26,32 +26,29 @@ function startCli(): void {
         case `View All Employees`:
           console.log(`View All Employees selected`);
           await viewAllEmps();
-          startCli();
+
           break;
         case `Add Employee`:
           console.log(`Add Employee selected`);
           addNewEmp();
-          startCli();
           break;
-          case `View All Roles`:
-            console.log(`View All Roles selected`);
-            await viewAllRole();
-            startCli();
-            break;
+        case `View All Roles`:
+          console.log(`View All Roles selected`);
+          await viewAllRole();
+          break;
         case `Add Role`:
           console.log(`Add Role selected`);
           addNewRole();
-          startCli();
           break;
         case `View All Departments`:
           console.log(`View All Departments selected`);
           viewAllDeps();
-          startCli();
           break;
         case `Add Department`:
-          console.log(`Add Department selected`);
-          addNewDep();
-          startCli();
+          {
+            console.log(`Add Department selected`);
+            addNewDep();
+          }
           break;
 
         default:
@@ -64,41 +61,80 @@ function startCli(): void {
 
 // finish these
 async function viewAllEmps() {
-  await Database.findAllEmps().then((data) => {
+  await Database.createAllEmps().then((data) => {
     console.table(data.rows);
+    startCli();
   });
 }
 
 async function addNewEmp() {
-// id: number,
-// first_name: string,
-// last_name: string,
-// role_id: number,
-// manager_id: number
-  await Database.findNewEmp().then((data) => {
-    console.table(data.rows);
+  // maybe here
+  const res = await inquirer.prompt([
+    {
+      type: "input",
+      message: "What is the first name of the new employee?",
+      name: "firstName",
+    },
+    {
+      type: "input",
+      message: "What is the last name of the new employee?",
+      name: "lastName",
+    },
+    {
+      type: "list",
+      message: "What is the role of the new employee?",
+      name: "role",
+      // research functions in inquirer
+      choices: [
+        1, 2, 3, 4, 5, 7, 8, 9, 11, 12, 14, 15, 16
+      ],
+    },
+    {
+      type: "list",
+      message: "Who is Manager of the new employee?",
+      name: "manager",
+      choices: [8, 16, 20, 26],
+    },
+  ]);
+  await Database.createNewEmp([
+    res.firstName,
+    res.lastName,
+    res.role,
+    res.manager,
+  ]).then((data) => {
+    console.table(`New Employee Added: ${data}`);
+    startCli();
   });
 }
 async function viewAllRole() {
-  await Database.findAllRole().then((data) => {
+  await Database.createAllRole().then((data) => {
     console.table(data.rows);
+    startCli();
   });
 }
 async function addNewRole() {
-  await Database.findNewRole().then((data) => {
+  await Database.createNewRole([]).then((data) => {
     console.log(data);
+    startCli();
   });
 }
 
 async function viewAllDeps() {
-  await Database.findAllDeps().then((data) => {
+  await Database.createAllDeps().then((data) => {
     console.table(data.rows);
+    startCli();
   });
 }
 
 async function addNewDep() {
-  await Database.findNewDep().then((data) => {
-    console.log(data);
+  const response = await inquirer.prompt({
+    type: "input",
+    message: "What is the name of the new department?",
+    name: "newDepartment",
+  });
+  await Database.createNewDep([response.newDepartment]).then((data) => {
+    console.log(`New Deapartment added: ${data}`);
+    startCli();
   });
 }
 
